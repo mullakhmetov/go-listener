@@ -15,8 +15,15 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	flag.Usage = func() {
+		fmt.Println("Usage: listener [port ...]")
+	}
 	flag.Parse()
 	wg := &sync.WaitGroup{}
+	ports := flag.Args()
+	if len(ports) == 0 {
+		fmt.Println("No ports passed. See 'listener --help'.")
+	}
 	for _, p := range flag.Args() {
 		wg.Add(1)
 		port := fmt.Sprintf(":%s", p)
